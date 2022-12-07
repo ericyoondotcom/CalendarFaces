@@ -51,7 +51,7 @@ private const val NUMBER_RADIUS_FRACTION = 0.45f
  * Represents all data needed to render an analog watch face.
  */
 data class WatchFaceData(
-    val activeColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.RED,
+    val highlightColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.RED,
     val ambientColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.AMBIENT,
     val drawHourPips: Boolean = DRAW_HOUR_PIPS_DEFAULT,
     val hourHandDimensions: ArmDimensions = ArmDimensions(

@@ -35,12 +35,10 @@ data class WatchFaceColorPalette(
     val activePrimaryColor: Int,
     val activeSecondaryColor: Int,
     val activeBackgroundColor: Int,
-    val activeOuterElementColor: Int,
     @DrawableRes val complicationStyleDrawableId: Int,
     val ambientPrimaryColor: Int,
     val ambientSecondaryColor: Int,
     val ambientBackgroundColor: Int,
-    val ambientOuterElementColor: Int
 ) {
     companion object {
         /**
@@ -48,22 +46,20 @@ data class WatchFaceColorPalette(
          */
         fun convertToWatchFaceColorPalette(
             context: Context,
-            activeColorStyle: ColorStyleIdAndResourceIds,
+            highlightColorStyle: ColorStyleIdAndResourceIds,
             ambientColorStyle: ColorStyleIdAndResourceIds
         ): WatchFaceColorPalette {
             return WatchFaceColorPalette(
                 // Active colors
-                activePrimaryColor = context.getColor(activeColorStyle.primaryColorId),
-                activeSecondaryColor = context.getColor(activeColorStyle.secondaryColorId),
-                activeBackgroundColor = context.getColor(activeColorStyle.backgroundColorId),
-                activeOuterElementColor = context.getColor(activeColorStyle.outerElementColorId),
+                activePrimaryColor = context.getColor(highlightColorStyle.primaryColorId),
+                activeSecondaryColor = context.getColor(highlightColorStyle.secondaryColorId),
+                activeBackgroundColor = context.getColor(highlightColorStyle.backgroundColorId),
                 // Complication color style
-                complicationStyleDrawableId = activeColorStyle.complicationStyleDrawableId,
+                complicationStyleDrawableId = highlightColorStyle.complicationStyleDrawableId,
                 // Ambient colors
                 ambientPrimaryColor = context.getColor(ambientColorStyle.primaryColorId),
                 ambientSecondaryColor = context.getColor(ambientColorStyle.secondaryColorId),
                 ambientBackgroundColor = context.getColor(ambientColorStyle.backgroundColorId),
-                ambientOuterElementColor = context.getColor(ambientColorStyle.outerElementColorId)
             )
         }
     }

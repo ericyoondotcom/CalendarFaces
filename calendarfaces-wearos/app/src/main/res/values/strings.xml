@@ -3,7 +3,7 @@
 <resources>
     <string name="app_name" translatable="false">CalendarFaces</string>
 
-    <string name="analog_watch_face_name" translatable="false">Alpha Analog</string>
+    <string name="analog_watch_face_name" translatable="false">Eventful</string>
 
     <!-- Name of watchface style category for selecting the color theme [CHAR LIMIT=20] -->
     <string name="colors_style_setting">Colors</string>
@@ -82,4 +82,7 @@
     <string name="activity_config_screenshot_content_description">Screenshot of Watch Face</string>
     <string name="activity_config_complication_button_right_content_description">Button to edit the right complication data</string>
     <string name="activity_config_complication_button_left_content_description">Button to edit the left complication data</string>
+
+    <!-- Watch face text constants -->
+    <string name="header_text_content">NEXT UP</string>
 </resources>
