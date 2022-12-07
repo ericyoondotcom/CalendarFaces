@@ -2,11 +2,12 @@
 
 <resources>
     <!-- constants for watch face element renderer. -->
-    <fraction name="content_area_padding_x">33%</fraction>
+    <fraction name="content_area_padding_x">20%</fraction>
     <fraction name="content_area_padding_y">33%</fraction>
     <dimen name="header_text_size">10sp</dimen>
-    <dimen name="event_name_size">40sp</dimen>
-    <dimen name="event_time_size">20sp</dimen>
+    <dimen name="event_name_size">20sp</dimen>
+    <dimen name="event_time_size">15sp</dimen>
+    <dimen name="padding_between_text">10sp</dimen>
 
     <!-- Values for WatchFaceConfigActivity -->
     <dimen name="activity_config_padding">6dp</dimen>

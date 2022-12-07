@@ -220,21 +220,38 @@ class AnalogWatchCanvasRenderer(
             (bounds.right - context.resources.getFraction(R.fraction.content_area_padding_x, bounds.width(), 0)).toInt(),
             (bounds.bottom - context.resources.getFraction(R.fraction.content_area_padding_y, bounds.height(), 0)).toInt()
         )
+        val paddingBetweenText = context.resources.getDimension(R.dimen.padding_between_text)
+
+        val xPos = contentArea.left.toFloat()
+        var yPos = contentArea.top.toFloat() // The y position of the vertically-stacked text as a counter
 
         headerTextPaint.color = watchFaceColors.activeHighlightColor
-
-        canvas.drawText(
-            context.resources.getString(R.string.header_text_content),
-            contentArea.left.toFloat(),
-            contentArea.top.toFloat(),
-            headerTextPaint
-        )
+        val headerContent = context.resources.getString(R.string.header_text_content)
+        val headerBounds = Rect();
+        // headerBounds is like an "out" parameter
+        headerTextPaint.getTextBounds(headerContent, 0, headerContent.length, headerBounds);
+        yPos += headerBounds.height() / 2
+        canvas.drawText(headerContent, xPos, yPos, headerTextPaint)
+        yPos += headerBounds.height() / 2
+        yPos += paddingBetweenText
 
         eventNameTextPaint.color = watchFaceColors.activeForegroundColor
-        canvas.drawText(
-            "Honors Topics",
+        val eventName = "Honors Topics"
+        val eventNameBounds = Rect();
+        eventNameTextPaint.getTextBounds(eventName, 0, eventName.length, eventNameBounds)
+        yPos += eventNameBounds.height() / 2
+        canvas.drawText(eventName, xPos, yPos, eventNameTextPaint)
+        yPos += eventNameBounds.height() / 2
+        yPos += paddingBetweenText
 
-        )
+        eventTimeTextPaint.color = watchFaceColors.activeForegroundColor
+        val eventTime = "in 15 minutes"
+        val eventTimeBounds = Rect();
+        eventTimeTextPaint.getTextBounds(eventTime, 0, eventTime.length, eventTimeBounds)
+        yPos += eventTimeBounds.height() / 2
+        canvas.drawText(eventTime, xPos, yPos, eventTimeTextPaint)
+        yPos += eventTimeBounds.height() / 2
+        yPos += paddingBetweenText
     }
 
     companion object {
