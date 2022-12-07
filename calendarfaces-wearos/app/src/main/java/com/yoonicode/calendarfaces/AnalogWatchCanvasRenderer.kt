@@ -22,8 +22,6 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.util.Log
 import android.view.SurfaceHolder
-import androidx.core.graphics.withRotation
-import androidx.core.graphics.withScale
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.Renderer
@@ -37,16 +35,12 @@ import com.yoonicode.calendarfaces.data.watchface.WatchFaceColorPalette.Companio
 import com.yoonicode.calendarfaces.data.watchface.WatchFaceData
 import com.yoonicode.calendarfaces.utils.COLOR_STYLE_SETTING
 import com.yoonicode.calendarfaces.utils.DRAW_HOUR_PIPS_STYLE_SETTING
-import com.yoonicode.calendarfaces.utils.WATCH_HAND_LENGTH_STYLE_SETTING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.time.Duration
 import java.time.ZonedDateTime
-import kotlin.math.cos
-import kotlin.math.sin
 
 // Default for how long each frame is displayed at expected frame rate.
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
@@ -222,36 +216,39 @@ class AnalogWatchCanvasRenderer(
         )
         val paddingBetweenText = context.resources.getDimension(R.dimen.padding_between_text)
 
-        val xPos = contentArea.left.toFloat()
-        var yPos = contentArea.top.toFloat() // The y position of the vertically-stacked text as a counter
+        val xOrigin = contentArea.left.toFloat()
+        val yOrigin = contentArea.centerY().toFloat()
+
+        eventNameTextPaint.color = watchFaceColors.activeForegroundColor
+        val eventName = "Honors Topics"
+        val eventNameBounds = Rect();
+        eventNameTextPaint.getTextBounds(eventName, 0, eventName.length, eventNameBounds)
+        canvas.drawText(eventName, xOrigin, yOrigin, eventNameTextPaint)
 
         headerTextPaint.color = watchFaceColors.activeHighlightColor
         val headerContent = context.resources.getString(R.string.header_text_content)
         val headerBounds = Rect();
         // headerBounds is like an "out" parameter
         headerTextPaint.getTextBounds(headerContent, 0, headerContent.length, headerBounds);
-        yPos += headerBounds.height() / 2
-        canvas.drawText(headerContent, xPos, yPos, headerTextPaint)
-        yPos += headerBounds.height() / 2
-        yPos += paddingBetweenText
+        canvas.drawText(
+            headerContent,
+            xOrigin,
+            yOrigin - (eventNameBounds.height() / 2) - paddingBetweenText - (headerBounds.height() / 2),
+            headerTextPaint
+        )
 
-        eventNameTextPaint.color = watchFaceColors.activeForegroundColor
-        val eventName = "Honors Topics"
-        val eventNameBounds = Rect();
-        eventNameTextPaint.getTextBounds(eventName, 0, eventName.length, eventNameBounds)
-        yPos += eventNameBounds.height() / 2
-        canvas.drawText(eventName, xPos, yPos, eventNameTextPaint)
-        yPos += eventNameBounds.height() / 2
-        yPos += paddingBetweenText
+
 
         eventTimeTextPaint.color = watchFaceColors.activeForegroundColor
         val eventTime = "in 15 minutes"
         val eventTimeBounds = Rect();
         eventTimeTextPaint.getTextBounds(eventTime, 0, eventTime.length, eventTimeBounds)
-        yPos += eventTimeBounds.height() / 2
-        canvas.drawText(eventTime, xPos, yPos, eventTimeTextPaint)
-        yPos += eventTimeBounds.height() / 2
-        yPos += paddingBetweenText
+        canvas.drawText(
+            eventTime,
+            xOrigin,
+            yOrigin + (eventNameBounds.height() / 2) + paddingBetweenText + (eventTimeBounds.height() / 2),
+            eventTimeTextPaint
+        )
     }
 
     companion object {
