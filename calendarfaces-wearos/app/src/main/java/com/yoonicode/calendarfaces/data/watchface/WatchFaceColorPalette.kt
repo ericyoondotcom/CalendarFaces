@@ -32,12 +32,12 @@ import androidx.wear.watchface.complications.rendering.ComplicationDrawable
  * as many [ComplicationDrawable]s as needed.
  */
 data class WatchFaceColorPalette(
-    val activePrimaryColor: Int,
-    val activeSecondaryColor: Int,
+    val activeHighlightColor: Int,
+    val activeForegroundColor: Int,
     val activeBackgroundColor: Int,
     @DrawableRes val complicationStyleDrawableId: Int,
-    val ambientPrimaryColor: Int,
-    val ambientSecondaryColor: Int,
+    val ambientHighlightColor: Int,
+    val ambientForegroundColor: Int,
     val ambientBackgroundColor: Int,
 ) {
     companion object {
@@ -51,14 +51,14 @@ data class WatchFaceColorPalette(
         ): WatchFaceColorPalette {
             return WatchFaceColorPalette(
                 // Active colors
-                activePrimaryColor = context.getColor(highlightColorStyle.primaryColorId),
-                activeSecondaryColor = context.getColor(highlightColorStyle.secondaryColorId),
+                activeHighlightColor = context.getColor(highlightColorStyle.highlightColorId),
+                activeForegroundColor = context.getColor(highlightColorStyle.foregroundColorId),
                 activeBackgroundColor = context.getColor(highlightColorStyle.backgroundColorId),
                 // Complication color style
                 complicationStyleDrawableId = highlightColorStyle.complicationStyleDrawableId,
                 // Ambient colors
-                ambientPrimaryColor = context.getColor(ambientColorStyle.primaryColorId),
-                ambientSecondaryColor = context.getColor(ambientColorStyle.secondaryColorId),
+                ambientHighlightColor = context.getColor(ambientColorStyle.highlightColorId),
+                ambientForegroundColor = context.getColor(ambientColorStyle.foregroundColorId),
                 ambientBackgroundColor = context.getColor(ambientColorStyle.backgroundColorId),
             )
         }

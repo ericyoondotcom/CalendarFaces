@@ -160,24 +160,6 @@ class AnalogWatchCanvasRenderer(
                         drawHourPips = booleanValue.value
                     )
                 }
-                WATCH_HAND_LENGTH_STYLE_SETTING -> {
-                    val doubleValue = options.value as
-                        UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
-
-                    // The arm lengths are usually only calculated the first time the watch face is
-                    // loaded to reduce the ops in the onDraw(). Because we updated the minute hand
-                    // watch length, we need to trigger a recalculation.
-                    armLengthChangedRecalculateClockHands = true
-
-                    // Updates length of minute hand based on edits from user.
-                    val newMinuteHandDimensions = newWatchFaceData.minuteHandDimensions.copy(
-                        lengthFraction = doubleValue.value.toFloat()
-                    )
-
-                    newWatchFaceData = newWatchFaceData.copy(
-                        minuteHandDimensions = newMinuteHandDimensions
-                    )
-                }
             }
         }
 
@@ -239,7 +221,8 @@ class AnalogWatchCanvasRenderer(
             (bounds.bottom - context.resources.getFraction(R.fraction.content_area_padding_y, bounds.height(), 0)).toInt()
         )
 
-        headerTextPaint.color = watchFaceColors.activePrimaryColor
+        headerTextPaint.color = watchFaceColors.activeHighlightColor
+
         canvas.drawText(
             context.resources.getString(R.string.header_text_content),
             contentArea.left.toFloat(),
@@ -247,7 +230,11 @@ class AnalogWatchCanvasRenderer(
             headerTextPaint
         )
 
-        eventNameTextPaint.color = watchFaceColors.activePrimaryColor
+        eventNameTextPaint.color = watchFaceColors.activeForegroundColor
+        canvas.drawText(
+            "Honors Topics",
+
+        )
     }
 
     companion object {

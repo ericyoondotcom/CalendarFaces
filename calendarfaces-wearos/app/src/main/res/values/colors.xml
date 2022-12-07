@@ -10,34 +10,29 @@
 
     <!-- Style colors (based on custom colors below). -->
     <!-- Ambient Style (used when wearable in ambient mode. -->
-    <color name="ambient_primary_color">@color/white</color>
-    <color name="ambient_secondary_color">@color/white_50</color>
+    <color name="ambient_highlight_color">@color/white_50</color>
+    <color name="ambient_foreground_color">@color/white</color>
     <color name="ambient_background_color">@color/black</color>
-    <color name="ambient_outer_element_color">@color/white_30</color>
 
     <!-- Red Style -->
-    <color name="red_primary_color">@color/maroon_light</color>
-    <color name="red_secondary_color">@color/maroon_50</color>
+    <color name="red_highlight_color">@color/maroon_light</color>
+    <color name="red_foreground_color">@color/maroon_50</color>
     <color name="red_background_color">@color/dark_gray</color>
-    <color name="red_outer_element_color">@color/maroon_30</color>
 
     <!-- Green Style -->
-    <color name="green_primary_color">@color/light_green</color>
-    <color name="green_secondary_color">@color/dark_green</color>
+    <color name="green_highlight_color">@color/light_green</color>
+    <color name="green_foreground_color">@color/dark_green</color>
     <color name="green_background_color">@color/dark_gray</color>
-    <color name="green_outer_element_color">@color/light_green</color>
 
     <!-- Blue Style -->
-    <color name="blue_primary_color">@color/light_blue</color>
-    <color name="blue_secondary_color">@color/dark_blue</color>
+    <color name="blue_highlight_color">@color/light_blue</color>
+    <color name="blue_foreground_color">@color/dark_blue</color>
     <color name="blue_background_color">@color/dark_gray</color>
-    <color name="blue_outer_element_color">@color/light_blue</color>
 
     <!-- White Style -->
-    <color name="white_primary_color">@color/white_70</color>
-    <color name="white_secondary_color">@color/white_50</color>
-    <color name="white_background_color">@color/dark_gray</color>
-    <color name="white_outer_element_color">@color/white_70</color>
+    <color name="white_highlight_color">#ff00AE</color>
+    <color name="white_foreground_color">@color/white</color>
+    <color name="white_background_color">@color/black</color>
 
     <!-- custom colors. -->
     <color name="transparent">#00000000</color>

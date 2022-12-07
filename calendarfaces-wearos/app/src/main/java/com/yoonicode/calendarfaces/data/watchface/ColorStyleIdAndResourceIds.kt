@@ -62,8 +62,8 @@ enum class ColorStyleIdAndResourceIds(
     @StringRes val nameResourceId: Int,
     @DrawableRes val iconResourceId: Int,
     @DrawableRes val complicationStyleDrawableId: Int,
-    @ColorRes val primaryColorId: Int,
-    @ColorRes val secondaryColorId: Int,
+    @ColorRes val highlightColorId: Int,
+    @ColorRes val foregroundColorId: Int,
     @ColorRes val backgroundColorId: Int
 ) {
     AMBIENT(
@@ -71,8 +71,8 @@ enum class ColorStyleIdAndResourceIds(
         nameResourceId = AMBIENT_COLOR_STYLE_NAME_RESOURCE_ID,
         iconResourceId = AMBIENT_COLOR_STYLE_ICON_ID,
         complicationStyleDrawableId = R.drawable.complication_white_style,
-        primaryColorId = R.color.ambient_primary_color,
-        secondaryColorId = R.color.ambient_secondary_color,
+        highlightColorId = R.color.ambient_highlight_color,
+        foregroundColorId = R.color.ambient_foreground_color,
         backgroundColorId = R.color.ambient_background_color,
     ),
 
@@ -81,8 +81,8 @@ enum class ColorStyleIdAndResourceIds(
         nameResourceId = RED_COLOR_STYLE_NAME_RESOURCE_ID,
         iconResourceId = RED_COLOR_STYLE_ICON_ID,
         complicationStyleDrawableId = R.drawable.complication_red_style,
-        primaryColorId = R.color.red_primary_color,
-        secondaryColorId = R.color.red_secondary_color,
+        highlightColorId = R.color.red_highlight_color,
+        foregroundColorId = R.color.red_foreground_color,
         backgroundColorId = R.color.red_background_color,
     ),
 
@@ -91,8 +91,8 @@ enum class ColorStyleIdAndResourceIds(
         nameResourceId = GREEN_COLOR_STYLE_NAME_RESOURCE_ID,
         iconResourceId = GREEN_COLOR_STYLE_ICON_ID,
         complicationStyleDrawableId = R.drawable.complication_green_style,
-        primaryColorId = R.color.green_primary_color,
-        secondaryColorId = R.color.green_secondary_color,
+        highlightColorId = R.color.green_highlight_color,
+        foregroundColorId = R.color.green_foreground_color,
         backgroundColorId = R.color.green_background_color,
     ),
 
@@ -101,8 +101,8 @@ enum class ColorStyleIdAndResourceIds(
         nameResourceId = BLUE_COLOR_STYLE_NAME_RESOURCE_ID,
         iconResourceId = BLUE_COLOR_STYLE_ICON_ID,
         complicationStyleDrawableId = R.drawable.complication_blue_style,
-        primaryColorId = R.color.blue_primary_color,
-        secondaryColorId = R.color.blue_secondary_color,
+        highlightColorId = R.color.blue_highlight_color,
+        foregroundColorId = R.color.blue_foreground_color,
         backgroundColorId = R.color.blue_background_color,
     ),
 
@@ -111,8 +111,8 @@ enum class ColorStyleIdAndResourceIds(
         nameResourceId = WHITE_COLOR_STYLE_NAME_RESOURCE_ID,
         iconResourceId = WHITE_COLOR_STYLE_ICON_ID,
         complicationStyleDrawableId = R.drawable.complication_white_style,
-        primaryColorId = R.color.white_primary_color,
-        secondaryColorId = R.color.white_secondary_color,
+        highlightColorId = R.color.white_highlight_color,
+        foregroundColorId = R.color.white_foreground_color,
         backgroundColorId = R.color.white_background_color,
     );
 

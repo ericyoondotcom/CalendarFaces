@@ -54,24 +54,6 @@ data class WatchFaceData(
     val highlightColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.RED,
     val ambientColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.AMBIENT,
     val drawHourPips: Boolean = DRAW_HOUR_PIPS_DEFAULT,
-    val hourHandDimensions: ArmDimensions = ArmDimensions(
-        lengthFraction = HOUR_HAND_LENGTH_FRACTION,
-        widthFraction = HOUR_HAND_WIDTH_FRACTION,
-        xRadiusRoundedCorners = ROUNDED_RECTANGLE_CORNERS_RADIUS,
-        yRadiusRoundedCorners = ROUNDED_RECTANGLE_CORNERS_RADIUS
-    ),
-    val minuteHandDimensions: ArmDimensions = ArmDimensions(
-        lengthFraction = MINUTE_HAND_LENGTH_FRACTION_DEFAULT,
-        widthFraction = MINUTE_HAND_WIDTH_FRACTION,
-        xRadiusRoundedCorners = ROUNDED_RECTANGLE_CORNERS_RADIUS,
-        yRadiusRoundedCorners = ROUNDED_RECTANGLE_CORNERS_RADIUS
-    ),
-    val secondHandDimensions: ArmDimensions = ArmDimensions(
-        lengthFraction = SECOND_HAND_LENGTH_FRACTION,
-        widthFraction = SECOND_HAND_WIDTH_FRACTION,
-        xRadiusRoundedCorners = ROUNDED_RECTANGLE_CORNERS_RADIUS,
-        yRadiusRoundedCorners = ROUNDED_RECTANGLE_CORNERS_RADIUS
-    ),
     val centerCircleDiameterFraction: Float = CENTER_CIRCLE_DIAMETER_FRACTION,
     val numberRadiusFraction: Float = NUMBER_RADIUS_FRACTION,
     val outerCircleStokeWidthFraction: Float = OUTER_CIRCLE_STROKE_WIDTH_FRACTION,
