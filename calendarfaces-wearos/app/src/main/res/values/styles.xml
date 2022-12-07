@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.WatchFace" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+    </style>
+
+    <style name="Widget.WatchFace.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/color_primary_button</item>
+    </style>
+</resources>
