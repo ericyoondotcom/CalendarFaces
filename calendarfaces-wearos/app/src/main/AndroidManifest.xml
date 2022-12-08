@@ -28,7 +28,7 @@
             android:value="true" />
 
         <service
-            android:name=".AnalogWatchFaceService"
+            android:name=".EventfulService"
             android:directBootAware="true"
             android:exported="true"
             android:label="@string/analog_watch_face_name"

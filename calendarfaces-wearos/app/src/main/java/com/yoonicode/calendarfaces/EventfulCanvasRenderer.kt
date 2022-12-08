@@ -41,6 +41,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 // Default for how long each frame is displayed at expected frame rate.
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
@@ -85,6 +86,10 @@ class AnalogWatchCanvasRenderer(
         watchFaceData.ambientColorStyle
     )
 
+    private val timeTextPaint = Paint().apply {
+        isAntiAlias = true
+        textSize = context.resources.getDimensionPixelSize(R.dimen.time_text_size).toFloat()
+    }
     private val headerTextPaint = Paint().apply {
         isAntiAlias = true
         textSize = context.resources.getDimensionPixelSize(R.dimen.header_text_size).toFloat()
@@ -200,14 +205,28 @@ class AnalogWatchCanvasRenderer(
         canvas.drawColor(backgroundColor)
 
         if (renderParameters.watchFaceLayers.contains(WatchFaceLayer.BASE)) {
-            drawTextDisplays(canvas, bounds);
+            drawTextDisplays(canvas, bounds, zonedDateTime);
         }
     }
 
     private fun drawTextDisplays(
         canvas: Canvas,
-        bounds: Rect
+        bounds: Rect,
+        zonedDateTime: ZonedDateTime
     ) {
+        val formatter = DateTimeFormatter.ofPattern("h:mm")
+        val timeContent = zonedDateTime.toLocalDateTime().format(formatter)
+        timeTextPaint.color = watchFaceColors.activeForegroundColor
+        val timePosOffset = context.resources.getDimension(R.dimen.time_pos)
+        val timeBounds = Rect() // timeBounds is like an out parameter
+        timeTextPaint.getTextBounds(timeContent, 0, timeContent.length, timeBounds)
+        canvas.drawText(
+            timeContent,
+            (bounds.centerX() - timeBounds.width() / 2).toFloat(),
+            bounds.top + timePosOffset + timeBounds.height() / 2,
+            timeTextPaint
+        )
+
         val contentArea = Rect(
             (context.resources.getFraction(R.fraction.content_area_padding_x, bounds.width(), 0) + bounds.left).toInt(),
             (context.resources.getFraction(R.fraction.content_area_padding_y, bounds.height(), 0) + bounds.top).toInt(),
@@ -228,7 +247,6 @@ class AnalogWatchCanvasRenderer(
         headerTextPaint.color = watchFaceColors.activeHighlightColor
         val headerContent = context.resources.getString(R.string.header_text_content)
         val headerBounds = Rect();
-        // headerBounds is like an "out" parameter
         headerTextPaint.getTextBounds(headerContent, 0, headerContent.length, headerBounds);
         canvas.drawText(
             headerContent,
@@ -236,8 +254,6 @@ class AnalogWatchCanvasRenderer(
             yOrigin - (eventNameBounds.height() / 2) - paddingBetweenText - (headerBounds.height() / 2),
             headerTextPaint
         )
-
-
 
         eventTimeTextPaint.color = watchFaceColors.activeForegroundColor
         val eventTime = "in 15 minutes"

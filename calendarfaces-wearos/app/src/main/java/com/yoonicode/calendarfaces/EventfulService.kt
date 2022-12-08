@@ -33,7 +33,7 @@ import com.yoonicode.calendarfaces.utils.createUserStyleSchema
  * [AnalogWatchCanvasRenderer]) including the complications and settings (styles user can change on
  * the watch face).
  */
-class AnalogWatchFaceService : WatchFaceService() {
+class EventfulService : WatchFaceService() {
 
     // Used by Watch Face APIs to construct user setting options and repository.
     override fun createUserStyleSchema(): UserStyleSchema =
@@ -74,6 +74,6 @@ class AnalogWatchFaceService : WatchFaceService() {
     }
 
     companion object {
-        const val TAG = "AnalogWatchFaceService"
+        const val TAG = "EventfulService"
     }
 }
