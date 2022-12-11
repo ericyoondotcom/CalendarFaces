@@ -23,7 +23,7 @@ const val SHOW_TIME_DEFAULT = true
  * Represents all data needed to render an analog watch face.
  */
 data class WatchFaceData(
-    val highlightColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.RED,
+    val highlightColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.WHITE,
     val ambientColorStyle: ColorStyleIdAndResourceIds = ColorStyleIdAndResourceIds.AMBIENT,
     val showTime: Boolean = SHOW_TIME_DEFAULT
 )

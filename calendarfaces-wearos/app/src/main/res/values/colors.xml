@@ -10,28 +10,28 @@
 
     <!-- Style colors (based on custom colors below). -->
     <!-- Ambient Style (used when wearable in ambient mode. -->
-    <color name="ambient_highlight_color">@color/white_50</color>
-    <color name="ambient_foreground_color">@color/white</color>
+    <color name="ambient_highlight_color">#999999</color>
+    <color name="ambient_foreground_color">#FFFFFF</color>
     <color name="ambient_background_color">@color/black</color>
 
     <!-- Red Style -->
-    <color name="red_highlight_color">@color/maroon_light</color>
-    <color name="red_foreground_color">@color/maroon_50</color>
-    <color name="red_background_color">@color/dark_gray</color>
+    <color name="red_highlight_color">#ff6a00</color>
+    <color name="red_foreground_color">#FFFFFF</color>
+    <color name="red_background_color">#521010</color>
 
     <!-- Green Style -->
-    <color name="green_highlight_color">@color/light_green</color>
-    <color name="green_foreground_color">@color/dark_green</color>
-    <color name="green_background_color">@color/dark_gray</color>
+    <color name="green_highlight_color">#84ff00</color>
+    <color name="green_foreground_color">#FFFFFF</color>
+    <color name="green_background_color">#274a23</color>
 
     <!-- Blue Style -->
-    <color name="blue_highlight_color">@color/light_blue</color>
-    <color name="blue_foreground_color">@color/dark_blue</color>
-    <color name="blue_background_color">@color/dark_gray</color>
+    <color name="blue_highlight_color">#00d5ff</color>
+    <color name="blue_foreground_color">#1f66ff</color>
+    <color name="blue_background_color">@color/black</color>
 
     <!-- White Style -->
     <color name="white_highlight_color">#ff00AE</color>
-    <color name="white_foreground_color">@color/white</color>
+    <color name="white_foreground_color">#FFFFFF</color>
     <color name="white_background_color">@color/black</color>
 
     <!-- custom colors. -->

@@ -123,7 +123,7 @@ class WatchFaceConfigStateHolder(
                 RenderParameters.HighlightLayer(
                     RenderParameters.HighlightedElement.AllComplicationSlots,
                     Color.RED, // Red complication highlight.
-                    Color.argb(128, 0, 0, 0) // Darken everything else.
+                    Color.argb(0, 0, 0, 0)
                 )
             ),
             editorSession.previewReferenceInstant,
@@ -178,11 +178,19 @@ class WatchFaceConfigStateHolder(
         }
     }
 
-    fun setDrawPips(enabled: Boolean) {
+    fun getColorStyleId(): String {
+        return getUserStyleOption(colorStyleKey)?.id.toString()
+    }
+
+    fun setShowTime(enabled: Boolean) {
         setUserStyleOption(
             showTimeKey,
             UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(enabled)
         )
+    }
+
+    fun getShowTime(): Boolean {
+        return (getUserStyleOption(showTimeKey) as UserStyleSetting.BooleanUserStyleSetting.BooleanOption).value
     }
 
     // Saves User Style Option change back to the back to the EditorSession.
@@ -198,6 +206,13 @@ class WatchFaceConfigStateHolder(
         val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
         mutableUserStyle[userStyleSetting] = userStyleOption
         editorSession.userStyle.value = mutableUserStyle.toUserStyle()
+    }
+
+    private fun getUserStyleOption(
+        userStyleSetting: UserStyleSetting
+    ): UserStyleSetting.Option? {
+        val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
+        return mutableUserStyle[userStyleSetting]
     }
 
     sealed class EditWatchFaceUiState {

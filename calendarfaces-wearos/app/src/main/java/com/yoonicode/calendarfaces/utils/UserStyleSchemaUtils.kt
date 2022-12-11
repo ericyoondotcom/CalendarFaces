@@ -27,7 +27,7 @@ import com.yoonicode.calendarfaces.data.watchface.SHOW_TIME_DEFAULT
 // values in the renderer and if new, we will update the database and update the watch face
 // being rendered.
 const val COLOR_STYLE_SETTING = "color_style_setting"
-const val SHOW_TIME_STYLE_SETTING = "draw_hour_pips_style_setting"
+const val SHOW_TIME_STYLE_SETTING = "show_time_style_setting"
 
 /*
  * Creates user styles in the settings activity associated with the watch face, so users can
@@ -51,8 +51,6 @@ fun createUserStyleSchema(context: Context): UserStyleSchema {
             )
         )
 
-    // 2. Allows user to toggle on/off the hour pips (dashes around the outer edge of the watch
-    // face).
     val showTimeStyleSetting = UserStyleSetting.BooleanUserStyleSetting(
         UserStyleSetting.Id(SHOW_TIME_STYLE_SETTING),
         context.resources,

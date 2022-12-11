@@ -20,7 +20,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
-import com.yoonicode.calendarfaces.data.watchface.ColorStyleIdAndResourceIds
+import com.yoonicode.calendarfaces.data.watchface.*
 import com.yoonicode.calendarfaces.databinding.ActivityWatchFaceConfigBinding
 import com.yoonicode.calendarfaces.utils.BOTTOM_COMPLICATION_ID
 import kotlinx.coroutines.Dispatchers
@@ -86,10 +86,10 @@ class WatchFaceConfigActivity : ComponentActivity() {
     }
 
     fun onClickColorStylePickerButton(view: View) {
-        val colorStyleIdAndResourceIdsList = enumValues<ColorStyleIdAndResourceIds>()
-        val newColorStyle: ColorStyleIdAndResourceIds = colorStyleIdAndResourceIdsList.random()
-
-        stateHolder.setColorStyle(newColorStyle.id)
+        val colorIds = arrayOf(WHITE_COLOR_STYLE_ID, BLUE_COLOR_STYLE_ID, GREEN_COLOR_STYLE_ID, RED_COLOR_STYLE_ID)
+        val currentIndex = colorIds.indexOf(stateHolder.getColorStyleId())
+        val newIndex = (currentIndex + 1) % colorIds.size
+        stateHolder.setColorStyle(colorIds[newIndex])
     }
 
     fun onClickBottomComplicationButton(view: View) {
@@ -97,7 +97,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
     }
 
     fun onClickShowTimeSwitch(view: View) {
-        stateHolder.setDrawPips(binding.showTimeSwitch.isChecked)
+        stateHolder.setShowTime(binding.showTimeSwitch.isChecked)
     }
 
     companion object {
