@@ -1,18 +1,3 @@
-/*
- * Copyright 2020 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.yoonicode.calendarfaces
 
 import android.content.Context
@@ -20,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.SurfaceHolder
 import androidx.wear.watchface.ComplicationSlotsManager
@@ -44,6 +30,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 // Default for how long each frame is displayed at expected frame rate.
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
@@ -53,6 +40,7 @@ private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
  * changes by user via [userStyleRepository.addUserStyleListener()].
  */
 class AnalogWatchCanvasRenderer(
+    private val service: EventfulService,
     private val context: Context,
     surfaceHolder: SurfaceHolder,
     watchState: WatchState,
@@ -236,6 +224,10 @@ class AnalogWatchCanvasRenderer(
             )
         }
 
+        if(service.calendarEntry == null) {
+            return
+        }
+
         val contentArea = Rect(
             (context.resources.getFraction(R.fraction.content_area_padding_x, bounds.width(), 0) + bounds.left).toInt(),
             (context.resources.getFraction(R.fraction.content_area_padding_y, bounds.height(), 0) + bounds.top).toInt(),
@@ -248,7 +240,7 @@ class AnalogWatchCanvasRenderer(
         val yOrigin = contentArea.centerY().toFloat()
 
         eventNameTextPaint.color = watchFaceColors.activeForegroundColor
-        val eventName = "Honors Topics"
+        val eventName = service.calendarEntry!!.title
         val eventNameBounds = Rect();
         eventNameTextPaint.getTextBounds(eventName, 0, eventName.length, eventNameBounds)
         canvas.drawText(eventName, xOrigin, yOrigin, eventNameTextPaint)
@@ -265,7 +257,11 @@ class AnalogWatchCanvasRenderer(
         )
 
         eventTimeTextPaint.color = watchFaceColors.activeForegroundColor
-        val eventTime = "in 15 minutes"
+        val eventTime = DateUtils.getRelativeTimeSpanString(
+            service.calendarEntry!!.startTime.timeInMillis,
+            Calendar.getInstance().timeInMillis,
+            DateUtils.SECOND_IN_MILLIS
+        ).toString()
         val eventTimeBounds = Rect();
         eventTimeTextPaint.getTextBounds(eventTime, 0, eventTime.length, eventTimeBounds)
         canvas.drawText(

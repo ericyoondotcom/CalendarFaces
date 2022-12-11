@@ -25,8 +25,10 @@ import androidx.wear.watchface.WatchFaceType
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSchema
+import com.yoonicode.calendarfaces.utils.CalendarEntry
 import com.yoonicode.calendarfaces.utils.createComplicationSlotManager
 import com.yoonicode.calendarfaces.utils.createUserStyleSchema
+import java.util.*
 
 /**
  * Handles much of the boilerplate needed to implement a watch face (minus rendering code; see
@@ -34,6 +36,7 @@ import com.yoonicode.calendarfaces.utils.createUserStyleSchema
  * the watch face).
  */
 class EventfulService : WatchFaceService() {
+    var calendarEntry: CalendarEntry? = null
 
     // Used by Watch Face APIs to construct user setting options and repository.
     override fun createUserStyleSchema(): UserStyleSchema =
@@ -54,10 +57,15 @@ class EventfulService : WatchFaceService() {
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
-        Log.d(TAG, "createWatchFace()")
+        calendarEntry = CalendarEntry(
+            Calendar.getInstance().apply {
+                timeInMillis += 1000 * 3
+            },
+            "Fortnite Time"
+        )
 
-        // Creates class that renders the watch face.
         val renderer = AnalogWatchCanvasRenderer(
+            this,
             context = applicationContext,
             surfaceHolder = surfaceHolder,
             watchState = watchState,
