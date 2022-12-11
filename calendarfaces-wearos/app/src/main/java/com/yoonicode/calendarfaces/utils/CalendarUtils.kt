@@ -20,11 +20,11 @@ class CalendarUtils {
             context: Context
         ): CalendarEntry? {
             val INSTANCE_PROJECTION: Array<String> = arrayOf(
-                CalendarContract.Instances.EVENT_ID, // 0
+                CalendarContract.Instances.ALL_DAY, // 0
                 CalendarContract.Instances.BEGIN, // 1
                 CalendarContract.Instances.TITLE // 2
             )
-            val PROJECTION_ID_INDEX: Int = 0
+            val PROJECTION_ALL_DAY: Int = 0
             val PROJECTION_BEGIN_INDEX: Int = 1
             val PROJECTION_TITLE_INDEX: Int = 2
 
@@ -41,9 +41,11 @@ class CalendarUtils {
             ).use {
                 if(it == null) return null;
                 while(it.moveToNext()) {
+                    val allDay = it.getInt(PROJECTION_ALL_DAY)
                     val beginVal = it.getLong(PROJECTION_BEGIN_INDEX)
                     val title = it.getString(PROJECTION_TITLE_INDEX)
                     if(beginVal < Calendar.getInstance().timeInMillis) continue
+                    if(allDay == 1) continue
                     val beginCalendar = Calendar.getInstance().apply { timeInMillis = beginVal }
                     entries.add(CalendarEntry(beginCalendar, title))
                 }
