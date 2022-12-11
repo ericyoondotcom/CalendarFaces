@@ -51,19 +51,11 @@
 
     <!-- Menu option within the complications configuration widget that lets us select both
     the left and the right complication for rendering. [CHAR LIMIT=20] -->
-    <string name="watchface_complications_setting_both">Both</string>
+    <string name="watchface_complications_setting_show">Show</string>
 
     <!-- Menu option within the complications configuration widget that lets us select no
     complications for rendering. [CHAR LIMIT=20] -->
-    <string name="watchface_complications_setting_none">None</string>
-
-    <!-- Menu option within the complications configuration widget that lets us select only the left
-    complication for rendering. [CHAR LIMIT=20] -->
-    <string name="watchface_complications_setting_left">Left</string>
-
-    <!-- Menu option within the complications configuration widget that lets us select only the
-    right complication for rendering. [CHAR LIMIT=20] -->
-    <string name="watchface_complications_setting_right">Right</string>
+    <string name="watchface_complications_setting_hide">Hide</string>
 
     <!-- Values for WatchFaceConfigActivity -->
     <!-- Title for config activity for watch face (settings). -->
@@ -74,14 +66,11 @@
     <string name="activity_config_slider_text_label">Minute Hand Size</string>
     <!-- Content Descriptions -->
     <string name="activity_config_preview_of_watch_face_content_description">Preview of Watch Face.</string>
-    <string name="activity_config_more_options_icon_content_description">Icon to indicate there are more options if you scroll down.</string>
-    <string name="activity_config_change_color_style_button_content_description">Button to change the color style of the watch face.</string>
-    <string name="activity_config_ticks_enabled_switch_content_description">Displays or hides the outer marks for the watch face.</string>
-    <string name="activity_config_minute_hand_slider_text_label_content_description">Label for hand length slider below.</string>
-    <string name="activity_config_minute_hand_length_slider_content_description">Slider for adjusting the minute hand length.</string>
+    <string name="activity_config_more_options_icon_content_description">Scroll down to see more options</string>
+    <string name="activity_config_change_color_style_button_content_description">Change color of watch face</string>
+    <string name="activity_config_ticks_enabled_switch_content_description">Display or hide the outer marks for the watch face.</string>
     <string name="activity_config_screenshot_content_description">Screenshot of Watch Face</string>
-    <string name="activity_config_complication_button_right_content_description">Button to edit the right complication data</string>
-    <string name="activity_config_complication_button_left_content_description">Button to edit the left complication data</string>
+    <string name="activity_config_complication_button_content_description">Edit the complication data</string>
 
     <!-- Watch face text constants -->
     <string name="header_text_content">NEXT UP</string>

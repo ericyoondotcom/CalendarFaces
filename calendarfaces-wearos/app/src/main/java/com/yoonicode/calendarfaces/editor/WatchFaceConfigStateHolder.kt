@@ -17,7 +17,6 @@ package com.yoonicode.calendarfaces.editor
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.RenderParameters
@@ -27,14 +26,9 @@ import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
-import com.yoonicode.calendarfaces.data.watchface.MINUTE_HAND_LENGTH_FRACTION_DEFAULT
-import com.yoonicode.calendarfaces.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MAXIMUM
-import com.yoonicode.calendarfaces.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MINIMUM
 import com.yoonicode.calendarfaces.utils.COLOR_STYLE_SETTING
 import com.yoonicode.calendarfaces.utils.DRAW_HOUR_PIPS_STYLE_SETTING
-import com.yoonicode.calendarfaces.utils.LEFT_COMPLICATION_ID
-import com.yoonicode.calendarfaces.utils.RIGHT_COMPLICATION_ID
-import com.yoonicode.calendarfaces.utils.WATCH_HAND_LENGTH_STYLE_SETTING
+import com.yoonicode.calendarfaces.utils.BOTTOM_COMPLICATION_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -72,8 +66,7 @@ class WatchFaceConfigStateHolder(
 
     // Keys from Watch Face Data Structure
     private lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
-    private lateinit var drawPipsKey: UserStyleSetting.BooleanUserStyleSetting
-    private lateinit var minuteHandLengthKey: UserStyleSetting.DoubleRangeUserStyleSetting
+    private lateinit var showTimeKey: UserStyleSetting.BooleanUserStyleSetting
 
     val uiState: StateFlow<EditWatchFaceUiState> =
         flow<EditWatchFaceUiState> {
@@ -110,14 +103,8 @@ class WatchFaceConfigStateHolder(
                 }
 
                 DRAW_HOUR_PIPS_STYLE_SETTING -> {
-                    drawPipsKey = setting as UserStyleSetting.BooleanUserStyleSetting
+                    showTimeKey = setting as UserStyleSetting.BooleanUserStyleSetting
                 }
-
-                WATCH_HAND_LENGTH_STYLE_SETTING -> {
-                    minuteHandLengthKey = setting as UserStyleSetting.DoubleRangeUserStyleSetting
-                }
-                // TODO (codingjeremy): Add complication change support if settings activity
-                // PR doesn't cover it. Otherwise, remove comment.
             }
         }
     }
@@ -129,8 +116,6 @@ class WatchFaceConfigStateHolder(
         userStyle: UserStyle,
         complicationsPreviewData: Map<Int, ComplicationData>
     ): UserStylesAndPreview {
-        Log.d(TAG, "updatesWatchFacePreview()")
-
         val bitmap = editorSession.renderWatchFaceToBitmap(
             RenderParameters(
                 DrawMode.INTERACTIVE,
@@ -148,28 +133,19 @@ class WatchFaceConfigStateHolder(
         val colorStyle =
             userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
         val ticksEnabledStyle =
-            userStyle[drawPipsKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
-        val minuteHandStyle =
-            userStyle[minuteHandLengthKey]
-                as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
-
-        Log.d(TAG, "/new values: $colorStyle, $ticksEnabledStyle, $minuteHandStyle")
+            userStyle[showTimeKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
 
         return UserStylesAndPreview(
             colorStyleId = colorStyle.id.toString(),
             ticksEnabled = ticksEnabledStyle.value,
-            minuteHandLength = multiplyByMultipleForSlider(minuteHandStyle.value).toFloat(),
             previewImage = bitmap
         )
     }
 
     fun setComplication(complicationLocation: Int) {
         val complicationSlotId = when (complicationLocation) {
-            LEFT_COMPLICATION_ID -> {
-                LEFT_COMPLICATION_ID
-            }
-            RIGHT_COMPLICATION_ID -> {
-                RIGHT_COMPLICATION_ID
+            BOTTOM_COMPLICATION_ID -> {
+                BOTTOM_COMPLICATION_ID
             }
             else -> {
                 return
@@ -204,17 +180,8 @@ class WatchFaceConfigStateHolder(
 
     fun setDrawPips(enabled: Boolean) {
         setUserStyleOption(
-            drawPipsKey,
+            showTimeKey,
             UserStyleSetting.BooleanUserStyleSetting.BooleanOption.from(enabled)
-        )
-    }
-
-    fun setMinuteHandArmLength(newLengthRatio: Float) {
-        val newMinuteHandLengthRatio = newLengthRatio.toDouble() / MULTIPLE_FOR_SLIDER
-
-        setUserStyleOption(
-            minuteHandLengthKey,
-            UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption(newMinuteHandLengthRatio)
         )
     }
 
@@ -225,10 +192,6 @@ class WatchFaceConfigStateHolder(
         userStyleSetting: UserStyleSetting,
         userStyleOption: UserStyleSetting.Option
     ) {
-        Log.d(TAG, "setUserStyleOption()")
-        Log.d(TAG, "\tuserStyleSetting: $userStyleSetting")
-        Log.d(TAG, "\tuserStyleOption: $userStyleOption")
-
         // TODO: As of watchface 1.0.0-beta01 We can't use MutableStateFlow.compareAndSet, or
         //       anything that calls through to that (like MutableStateFlow.update) because
         //       MutableStateFlow.compareAndSet won't properly update the user style.
@@ -246,27 +209,6 @@ class WatchFaceConfigStateHolder(
     data class UserStylesAndPreview(
         val colorStyleId: String,
         val ticksEnabled: Boolean,
-        val minuteHandLength: Float,
         val previewImage: Bitmap
     )
-
-    companion object {
-        private const val TAG = "WatchFaceConfigStateHolder"
-
-        // To convert the double representing the arm length to valid float value in the range the
-        // slider can support, we need to multiply the original value times 1,000.
-        private const val MULTIPLE_FOR_SLIDER: Float = 1000f
-
-        const val MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER =
-            MINUTE_HAND_LENGTH_FRACTION_MINIMUM * MULTIPLE_FOR_SLIDER
-
-        const val MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER =
-            MINUTE_HAND_LENGTH_FRACTION_MAXIMUM * MULTIPLE_FOR_SLIDER
-
-        const val MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER =
-            MINUTE_HAND_LENGTH_FRACTION_DEFAULT * MULTIPLE_FOR_SLIDER
-
-        private fun multiplyByMultipleForSlider(lengthFraction: Double) =
-            lengthFraction * MULTIPLE_FOR_SLIDER
-    }
 }

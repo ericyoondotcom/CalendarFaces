@@ -29,42 +29,26 @@ import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import com.yoonicode.calendarfaces.R
 
-// Information needed for complications.
 // Creates bounds for the locations of both right and left complications. (This is the
 // location from 0.0 - 1.0.)
-// Both left and right complications use the same top and bottom bounds.
-private const val LEFT_AND_RIGHT_COMPLICATIONS_TOP_BOUND = 0.4f
-private const val LEFT_AND_RIGHT_COMPLICATIONS_BOTTOM_BOUND = 0.6f
+private const val COMPLICATION_TOP_BOUND = 0.75f
+private const val COMPLICATION_BOTTOM_BOUND = 0.95f
 
-private const val LEFT_COMPLICATION_LEFT_BOUND = 0.2f
-private const val LEFT_COMPLICATION_RIGHT_BOUND = 0.4f
-
-private const val RIGHT_COMPLICATION_LEFT_BOUND = 0.6f
-private const val RIGHT_COMPLICATION_RIGHT_BOUND = 0.8f
+private const val COMPLICATION_LEFT_BOUND = 0.4f
+private const val COMPLICATION_RIGHT_BOUND = 0.6f
 
 private const val DEFAULT_COMPLICATION_STYLE_DRAWABLE_ID = R.drawable.complication_red_style
 
 // Unique IDs for each complication. The settings activity that supports allowing users
 // to select their complication data provider requires numbers to be >= 0.
-internal const val LEFT_COMPLICATION_ID = 100
-internal const val RIGHT_COMPLICATION_ID = 101
+internal const val BOTTOM_COMPLICATION_ID = 100
 
 /**
  * Represents the unique id associated with a complication and the complication types it supports.
  */
 sealed class ComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>) {
-    object Left : ComplicationConfig(
-        LEFT_COMPLICATION_ID,
-        listOf(
-            ComplicationType.RANGED_VALUE,
-            ComplicationType.MONOCHROMATIC_IMAGE,
-            ComplicationType.SHORT_TEXT,
-            ComplicationType.SMALL_IMAGE
-        )
-    )
-
-    object Right : ComplicationConfig(
-        RIGHT_COMPLICATION_ID,
+    object Bottom : ComplicationConfig(
+        BOTTOM_COMPLICATION_ID,
         listOf(
             ComplicationType.RANGED_VALUE,
             ComplicationType.MONOCHROMATIC_IMAGE,
@@ -89,44 +73,27 @@ fun createComplicationSlotManager(
             )
         }
 
-    val leftComplication = ComplicationSlot.createRoundRectComplicationSlotBuilder(
-        id = ComplicationConfig.Left.id,
+    val bottomComplication = ComplicationSlot.createRoundRectComplicationSlotBuilder(
+        id = ComplicationConfig.Bottom.id,
         canvasComplicationFactory = defaultCanvasComplicationFactory,
-        supportedTypes = ComplicationConfig.Left.supportedTypes,
+        supportedTypes = ComplicationConfig.Bottom.supportedTypes,
         defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy(
             SystemDataSources.DATA_SOURCE_DAY_OF_WEEK,
             ComplicationType.SHORT_TEXT
         ),
         bounds = ComplicationSlotBounds(
             RectF(
-                LEFT_COMPLICATION_LEFT_BOUND,
-                LEFT_AND_RIGHT_COMPLICATIONS_TOP_BOUND,
-                LEFT_COMPLICATION_RIGHT_BOUND,
-                LEFT_AND_RIGHT_COMPLICATIONS_BOTTOM_BOUND
+                COMPLICATION_LEFT_BOUND,
+                COMPLICATION_TOP_BOUND,
+                COMPLICATION_RIGHT_BOUND,
+                COMPLICATION_BOTTOM_BOUND
             )
         )
     )
         .build()
 
-    val rightComplication = ComplicationSlot.createRoundRectComplicationSlotBuilder(
-        id = ComplicationConfig.Right.id,
-        canvasComplicationFactory = defaultCanvasComplicationFactory,
-        supportedTypes = ComplicationConfig.Right.supportedTypes,
-        defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy(
-            SystemDataSources.DATA_SOURCE_STEP_COUNT,
-            ComplicationType.SHORT_TEXT
-        ),
-        bounds = ComplicationSlotBounds(
-            RectF(
-                RIGHT_COMPLICATION_LEFT_BOUND,
-                LEFT_AND_RIGHT_COMPLICATIONS_TOP_BOUND,
-                RIGHT_COMPLICATION_RIGHT_BOUND,
-                LEFT_AND_RIGHT_COMPLICATIONS_BOTTOM_BOUND
-            )
-        )
-    ).build()
     return ComplicationSlotsManager(
-        listOf(leftComplication, rightComplication),
+        listOf(bottomComplication),
         currentUserStyleRepository
     )
 }

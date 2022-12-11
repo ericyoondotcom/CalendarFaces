@@ -22,13 +22,8 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.yoonicode.calendarfaces.data.watchface.ColorStyleIdAndResourceIds
 import com.yoonicode.calendarfaces.databinding.ActivityWatchFaceConfigBinding
-import com.yoonicode.calendarfaces.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
-import com.yoonicode.calendarfaces.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER
-import com.yoonicode.calendarfaces.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
-import com.yoonicode.calendarfaces.utils.LEFT_COMPLICATION_ID
-import com.yoonicode.calendarfaces.utils.RIGHT_COMPLICATION_ID
+import com.yoonicode.calendarfaces.utils.BOTTOM_COMPLICATION_ID
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -56,17 +51,6 @@ class WatchFaceConfigActivity : ComponentActivity() {
         // Disable widgets until data loads and values are set.
         binding.colorStylePickerButton.isEnabled = false
         binding.ticksEnabledSwitch.isEnabled = false
-        binding.minuteHandLengthSlider.isEnabled = false
-
-        // Set max and min.
-        binding.minuteHandLengthSlider.valueTo = MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER
-        binding.minuteHandLengthSlider.valueFrom = MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
-        binding.minuteHandLengthSlider.value = MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
-
-        binding.minuteHandLengthSlider.addOnChangeListener { slider, value, fromUser ->
-            Log.d(TAG, "addOnChangeListener(): $slider, $value, $fromUser")
-            stateHolder.setMinuteHandArmLength(value)
-        }
 
         lifecycleScope.launch(Dispatchers.Main.immediate) {
             stateHolder.uiState
@@ -96,7 +80,6 @@ class WatchFaceConfigActivity : ComponentActivity() {
         Log.d(TAG, "\tselected color style: $colorStyleId")
 
         binding.ticksEnabledSwitch.isChecked = userStylesAndPreview.ticksEnabled
-        binding.minuteHandLengthSlider.value = userStylesAndPreview.minuteHandLength
         binding.preview.watchFaceBackground.setImageBitmap(userStylesAndPreview.previewImage)
 
         enabledWidgets()
@@ -105,32 +88,20 @@ class WatchFaceConfigActivity : ComponentActivity() {
     private fun enabledWidgets() {
         binding.colorStylePickerButton.isEnabled = true
         binding.ticksEnabledSwitch.isEnabled = true
-        binding.minuteHandLengthSlider.isEnabled = true
     }
 
     fun onClickColorStylePickerButton(view: View) {
-        Log.d(TAG, "onClickColorStylePickerButton() $view")
-
-        // TODO (codingjeremy): Replace with a RecyclerView to choose color style (next CL)
-        // Selects a random color style from list.
         val colorStyleIdAndResourceIdsList = enumValues<ColorStyleIdAndResourceIds>()
         val newColorStyle: ColorStyleIdAndResourceIds = colorStyleIdAndResourceIdsList.random()
 
         stateHolder.setColorStyle(newColorStyle.id)
     }
 
-    fun onClickLeftComplicationButton(view: View) {
-        Log.d(TAG, "onClickLeftComplicationButton() $view")
-        stateHolder.setComplication(LEFT_COMPLICATION_ID)
-    }
-
-    fun onClickRightComplicationButton(view: View) {
-        Log.d(TAG, "onClickRightComplicationButton() $view")
-        stateHolder.setComplication(RIGHT_COMPLICATION_ID)
+    fun onClickBottomComplicationButton(view: View) {
+        stateHolder.setComplication(BOTTOM_COMPLICATION_ID)
     }
 
     fun onClickTicksEnabledSwitch(view: View) {
-        Log.d(TAG, "onClickTicksEnabledSwitch() $view")
         stateHolder.setDrawPips(binding.ticksEnabledSwitch.isChecked)
     }
 

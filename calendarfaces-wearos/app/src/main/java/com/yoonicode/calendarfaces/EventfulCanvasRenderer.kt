@@ -26,6 +26,8 @@ import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
+import androidx.wear.watchface.complications.rendering.CanvasComplicationDrawable
+import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
@@ -172,6 +174,15 @@ class AnalogWatchCanvasRenderer(
                 watchFaceData.highlightColorStyle,
                 watchFaceData.ambientColorStyle
             )
+
+            for ((_, complication) in complicationSlotsManager.complicationSlots) {
+                ComplicationDrawable.getDrawable(
+                    context,
+                    watchFaceColors.complicationStyleDrawableId
+                )?.let {
+                    (complication.renderer as CanvasComplicationDrawable).drawable = it
+                }
+            }
         }
     }
 
@@ -188,6 +199,12 @@ class AnalogWatchCanvasRenderer(
         sharedAssets: AnalogSharedAssets
     ) {
         canvas.drawColor(renderParameters.highlightLayer!!.backgroundTint)
+
+        for ((_, complication) in complicationSlotsManager.complicationSlots) {
+            if (complication.enabled) {
+                complication.renderHighlightLayer(canvas, zonedDateTime, renderParameters)
+            }
+        }
     }
 
     override fun render(
@@ -201,11 +218,20 @@ class AnalogWatchCanvasRenderer(
         } else {
             watchFaceColors.activeBackgroundColor
         }
-
         canvas.drawColor(backgroundColor)
 
         if (renderParameters.watchFaceLayers.contains(WatchFaceLayer.BASE)) {
             drawTextDisplays(canvas, bounds, zonedDateTime);
+        }
+
+        drawComplications(canvas, zonedDateTime);
+    }
+
+    private fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime) {
+        for ((_, complication) in complicationSlotsManager.complicationSlots) {
+            if (complication.enabled) {
+                complication.render(canvas, zonedDateTime, renderParameters)
+            }
         }
     }
 
