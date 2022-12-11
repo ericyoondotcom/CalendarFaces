@@ -26,11 +26,6 @@ import com.yoonicode.calendarfaces.utils.BOTTOM_COMPLICATION_ID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Allows user to edit certain parts of the watch face (color style, ticks displayed, minute arm
- * length) by using the [WatchFaceConfigStateHolder]. (All widgets are disabled until data is
- * loaded.)
- */
 class WatchFaceConfigActivity : ComponentActivity() {
     private val stateHolder: WatchFaceConfigStateHolder by lazy {
         WatchFaceConfigStateHolder(
@@ -50,7 +45,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
 
         // Disable widgets until data loads and values are set.
         binding.colorStylePickerButton.isEnabled = false
-        binding.ticksEnabledSwitch.isEnabled = false
+        binding.showTimeSwitch.isEnabled = false
 
         lifecycleScope.launch(Dispatchers.Main.immediate) {
             stateHolder.uiState
@@ -79,7 +74,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
         val colorStyleId: String = userStylesAndPreview.colorStyleId
         Log.d(TAG, "\tselected color style: $colorStyleId")
 
-        binding.ticksEnabledSwitch.isChecked = userStylesAndPreview.ticksEnabled
+        binding.showTimeSwitch.isChecked = userStylesAndPreview.showTime
         binding.preview.watchFaceBackground.setImageBitmap(userStylesAndPreview.previewImage)
 
         enabledWidgets()
@@ -87,7 +82,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
 
     private fun enabledWidgets() {
         binding.colorStylePickerButton.isEnabled = true
-        binding.ticksEnabledSwitch.isEnabled = true
+        binding.showTimeSwitch.isEnabled = true
     }
 
     fun onClickColorStylePickerButton(view: View) {
@@ -101,8 +96,8 @@ class WatchFaceConfigActivity : ComponentActivity() {
         stateHolder.setComplication(BOTTOM_COMPLICATION_ID)
     }
 
-    fun onClickTicksEnabledSwitch(view: View) {
-        stateHolder.setDrawPips(binding.ticksEnabledSwitch.isChecked)
+    fun onClickShowTimeSwitch(view: View) {
+        stateHolder.setDrawPips(binding.showTimeSwitch.isChecked)
     }
 
     companion object {

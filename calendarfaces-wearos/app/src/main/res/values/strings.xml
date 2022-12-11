@@ -5,56 +5,21 @@
 
     <string name="analog_watch_face_name" translatable="false">Eventful</string>
 
-    <!-- Name of watchface style category for selecting the color theme [CHAR LIMIT=20] -->
     <string name="colors_style_setting">Colors</string>
-
-    <!-- Subtitle for the menu option to select the watch face color theme -->
     <string name="colors_style_setting_description">Watchface colorization</string>
 
-    <!-- Name of watchface style [CHAR LIMIT=20] -->
     <string name="ambient_style_name">Ambient Style</string>
-
-    <!-- Name of watchface style [CHAR LIMIT=20] -->
     <string name="red_style_name">Red Style</string>
-
-    <!-- Name of watchface style [CHAR LIMIT=20] -->
     <string name="green_style_name">Green Style</string>
-
-    <!-- Name of watchface style [CHAR LIMIT=20] -->
     <string name="blue_style_name">Blue Style</string>
-
-    <!-- Name of watchface style [CHAR LIMIT=20] -->
     <string name="white_style_name">White Style</string>
 
-    <!-- An option within the analog watch face to draw pips to mark each hour [CHAR LIMIT=20] -->
-    <string name="watchface_pips_setting">Hour Pips</string>
+    <string name="watchface_show_time_setting">Show Time</string>
+    <string name="watchface_show_time_setting_description">Show time at top of screen.</string>
 
-    <!-- Subtitle for the menu option to configure if we should draw pips to mark each hour
-     on the watch face -->
-    <string name="watchface_pips_setting_description">Whether to draw or not</string>
-
-    <!-- A menu option to select a widget that lets us configure the length of the watch hands
-    [CHAR LIMIT=20] -->
-    <string name="watchface_hand_length_setting">Minute Hand length</string>
-
-    <!-- Sub title for the menu option to select a widget that lets us configure the length of the
-    watch hands -->
-    <string name="watchface_hand_length_setting_description">Scale of watch hand</string>
-
-    <!-- A menu option to select a widget that lets us configure the Complications (a watch
-    making term) [CHAR LIMIT=20] -->
     <string name="watchface_complications_setting">Complications</string>
-
-    <!-- Sub title for the menu option to select a widget that lets us configure the Complications
-    (a watch making term) [CHAR LIMIT=20] -->
     <string name="watchface_complications_setting_description">Number and position</string>
-
-    <!-- Menu option within the complications configuration widget that lets us select both
-    the left and the right complication for rendering. [CHAR LIMIT=20] -->
     <string name="watchface_complications_setting_show">Show</string>
-
-    <!-- Menu option within the complications configuration widget that lets us select no
-    complications for rendering. [CHAR LIMIT=20] -->
     <string name="watchface_complications_setting_hide">Hide</string>
 
     <!-- Values for WatchFaceConfigActivity -->
@@ -62,13 +27,12 @@
     <string name="title_activity_watch_face_config">Configuration</string>
     <!-- Use of "\n" is to conserve horizontal space in config menu. -->
     <string name="activity_config_color_style_picker_label">Color\nStyle</string>
-    <string name="activity_config_ticks_enabled_label">Ticks\nEnabled</string>
-    <string name="activity_config_slider_text_label">Minute Hand Size</string>
+    <string name="activity_config_show_time_label">Show Time</string>
     <!-- Content Descriptions -->
     <string name="activity_config_preview_of_watch_face_content_description">Preview of Watch Face.</string>
     <string name="activity_config_more_options_icon_content_description">Scroll down to see more options</string>
     <string name="activity_config_change_color_style_button_content_description">Change color of watch face</string>
-    <string name="activity_config_ticks_enabled_switch_content_description">Display or hide the outer marks for the watch face.</string>
+    <string name="activity_config_show_time_switch_content_description">Display or hide the time at the top of the screen</string>
     <string name="activity_config_screenshot_content_description">Screenshot of Watch Face</string>
     <string name="activity_config_complication_button_content_description">Edit the complication data</string>
 

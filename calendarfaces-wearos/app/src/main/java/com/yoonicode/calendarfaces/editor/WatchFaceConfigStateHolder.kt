@@ -27,7 +27,7 @@ import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import com.yoonicode.calendarfaces.utils.COLOR_STYLE_SETTING
-import com.yoonicode.calendarfaces.utils.DRAW_HOUR_PIPS_STYLE_SETTING
+import com.yoonicode.calendarfaces.utils.SHOW_TIME_STYLE_SETTING
 import com.yoonicode.calendarfaces.utils.BOTTOM_COMPLICATION_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -102,7 +102,7 @@ class WatchFaceConfigStateHolder(
                     colorStyleKey = setting as UserStyleSetting.ListUserStyleSetting
                 }
 
-                DRAW_HOUR_PIPS_STYLE_SETTING -> {
+                SHOW_TIME_STYLE_SETTING -> {
                     showTimeKey = setting as UserStyleSetting.BooleanUserStyleSetting
                 }
             }
@@ -132,12 +132,12 @@ class WatchFaceConfigStateHolder(
 
         val colorStyle =
             userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
-        val ticksEnabledStyle =
+        val showTimeStyle =
             userStyle[showTimeKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
 
         return UserStylesAndPreview(
             colorStyleId = colorStyle.id.toString(),
-            ticksEnabled = ticksEnabledStyle.value,
+            showTime = showTimeStyle.value,
             previewImage = bitmap
         )
     }
@@ -208,7 +208,7 @@ class WatchFaceConfigStateHolder(
 
     data class UserStylesAndPreview(
         val colorStyleId: String,
-        val ticksEnabled: Boolean,
+        val showTime: Boolean,
         val previewImage: Bitmap
     )
 }

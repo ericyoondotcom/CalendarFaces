@@ -21,17 +21,13 @@ import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import com.yoonicode.calendarfaces.R
 import com.yoonicode.calendarfaces.data.watchface.ColorStyleIdAndResourceIds
-import com.yoonicode.calendarfaces.data.watchface.DRAW_HOUR_PIPS_DEFAULT
-import com.yoonicode.calendarfaces.data.watchface.MINUTE_HAND_LENGTH_FRACTION_DEFAULT
-import com.yoonicode.calendarfaces.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MAXIMUM
-import com.yoonicode.calendarfaces.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MINIMUM
+import com.yoonicode.calendarfaces.data.watchface.SHOW_TIME_DEFAULT
 
 // Keys to matched content in the  the user style settings. We listen for changes to these
 // values in the renderer and if new, we will update the database and update the watch face
 // being rendered.
 const val COLOR_STYLE_SETTING = "color_style_setting"
-const val DRAW_HOUR_PIPS_STYLE_SETTING = "draw_hour_pips_style_setting"
-const val WATCH_HAND_LENGTH_STYLE_SETTING = "watch_hand_length_style_setting"
+const val SHOW_TIME_STYLE_SETTING = "draw_hour_pips_style_setting"
 
 /*
  * Creates user styles in the settings activity associated with the watch face, so users can
@@ -57,35 +53,21 @@ fun createUserStyleSchema(context: Context): UserStyleSchema {
 
     // 2. Allows user to toggle on/off the hour pips (dashes around the outer edge of the watch
     // face).
-    val drawHourPipsStyleSetting = UserStyleSetting.BooleanUserStyleSetting(
-        UserStyleSetting.Id(DRAW_HOUR_PIPS_STYLE_SETTING),
+    val showTimeStyleSetting = UserStyleSetting.BooleanUserStyleSetting(
+        UserStyleSetting.Id(SHOW_TIME_STYLE_SETTING),
         context.resources,
-        R.string.watchface_pips_setting,
-        R.string.watchface_pips_setting_description,
+        R.string.watchface_show_time_setting,
+        R.string.watchface_show_time_setting_description,
         null,
         listOf(WatchFaceLayer.BASE),
-        DRAW_HOUR_PIPS_DEFAULT
-    )
-
-    // 3. Allows user to change the length of the minute hand.
-    val watchHandLengthStyleSetting = UserStyleSetting.DoubleRangeUserStyleSetting(
-        UserStyleSetting.Id(WATCH_HAND_LENGTH_STYLE_SETTING),
-        context.resources,
-        R.string.watchface_hand_length_setting,
-        R.string.watchface_hand_length_setting_description,
-        null,
-        MINUTE_HAND_LENGTH_FRACTION_MINIMUM.toDouble(),
-        MINUTE_HAND_LENGTH_FRACTION_MAXIMUM.toDouble(),
-        listOf(WatchFaceLayer.COMPLICATIONS_OVERLAY),
-        MINUTE_HAND_LENGTH_FRACTION_DEFAULT.toDouble()
+        SHOW_TIME_DEFAULT
     )
 
     // 4. Create style settings to hold all options.
     return UserStyleSchema(
         listOf(
             colorStyleSetting,
-            drawHourPipsStyleSetting,
-            watchHandLengthStyleSetting
+            showTimeStyleSetting
         )
     )
 }

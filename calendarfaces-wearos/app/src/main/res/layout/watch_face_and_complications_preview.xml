@@ -17,7 +17,8 @@
 <!--
     ImageView to load preview of watch face.
 -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/analog_complication_settings_preview_size"
@@ -25,57 +26,55 @@
 
     <ImageView
         android:id="@+id/watch_face_background"
-        android:layout_width="@dimen/analog_complication_settings_preview_size"
-        android:layout_height="@dimen/analog_complication_settings_preview_size"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="#FF0000"
         android:contentDescription="@string/activity_config_screenshot_content_description"
-        android:padding="@dimen/watch_face_preview_background_padding"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".editor.WatchFaceConfigActivity">
+
+        />
+
+        <!-- Above Change from example project: remove padding so bitmap matches with touch targets -->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".30">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70" />
 
         <Button
             android:id="@+id/bottom_complication3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="#00FF00"
+            android:layout_weight="30"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@color/black"
             android:contentDescription="@string/activity_config_complication_button_content_description"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:onClick="onClickBottomComplicationButton"
             app:cornerRadius="0dp" />
 
-        <Button
-            android:id="@+id/bottom_complication"
+        <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="#0000FF"
-            android:contentDescription="@string/activity_config_complication_button_content_description"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:onClick="onClickBottomComplicationButton"
-            app:cornerRadius="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
-
+            android:layout_weight="0" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

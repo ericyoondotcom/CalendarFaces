@@ -44,8 +44,8 @@
         <include
             android:id="@+id/preview"
             layout="@layout/watch_face_and_complications_preview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/analog_complication_settings_preview_size"
+            android:layout_height="@dimen/analog_complication_settings_preview_size"
             android:contentDescription="@string/activity_config_preview_of_watch_face_content_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,17 +81,17 @@
             app:layout_constraintTop_toBottomOf="@+id/more_options_image_view" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/ticks_enabled_switch"
+            android:id="@+id/show_time_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/watch_ticks"
-            android:drawablePadding="@dimen/activity_config_ticks_enabled_switch_icon_padding"
+            android:drawableStart="@drawable/show_time"
+            android:drawablePadding="@dimen/activity_config_show_time_switch_icon_padding"
             android:gravity="start|center_vertical"
-            android:onClick="onClickTicksEnabledSwitch"
-            android:text="@string/activity_config_ticks_enabled_label"
+            android:onClick="onClickShowTimeSwitch"
+            android:text="@string/activity_config_show_time_label"
             android:textColor="@color/white"
             android:textAppearance="?attr/textAppearanceButton"
-            android:contentDescription="@string/activity_config_ticks_enabled_switch_content_description"
+            android:contentDescription="@string/activity_config_show_time_switch_content_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/color_style_picker_button" />
@@ -102,7 +102,7 @@
             android:layout_height="@dimen/activity_config_spacer_height_post_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ticks_enabled_switch" />
+            app:layout_constraintTop_toBottomOf="@+id/show_time_switch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

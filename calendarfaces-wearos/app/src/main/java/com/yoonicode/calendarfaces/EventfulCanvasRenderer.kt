@@ -36,7 +36,7 @@ import com.yoonicode.calendarfaces.data.watchface.ColorStyleIdAndResourceIds
 import com.yoonicode.calendarfaces.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
 import com.yoonicode.calendarfaces.data.watchface.WatchFaceData
 import com.yoonicode.calendarfaces.utils.COLOR_STYLE_SETTING
-import com.yoonicode.calendarfaces.utils.DRAW_HOUR_PIPS_STYLE_SETTING
+import com.yoonicode.calendarfaces.utils.SHOW_TIME_STYLE_SETTING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -75,13 +75,8 @@ class AnalogWatchCanvasRenderer(
     private val scope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    // Represents all data needed to render the watch face. All value defaults are constants. Only
-    // three values are changeable by the user (color scheme, ticks being rendered, and length of
-    // the minute arm). Those dynamic values are saved in the watch face APIs and we update those
-    // here (in the renderer) through a Kotlin Flow.
     private var watchFaceData: WatchFaceData = WatchFaceData()
 
-    // Converts resource ids into Colors and ComplicationDrawable.
     private var watchFaceColors = convertToWatchFaceColorPalette(
         context,
         watchFaceData.highlightColorStyle,
@@ -104,20 +99,6 @@ class AnalogWatchCanvasRenderer(
         isAntiAlias = true
         textSize = context.resources.getDimensionPixelSize(R.dimen.event_time_size).toFloat()
     }
-
-    private lateinit var hourHandFill: Path
-    private lateinit var hourHandBorder: Path
-    private lateinit var minuteHandFill: Path
-    private lateinit var minuteHandBorder: Path
-    private lateinit var secondHand: Path
-
-    // Changed when setting changes cause a change in the minute hand arm (triggered by user in
-    // updateUserStyle() via userStyleRepository.addUserStyleListener()).
-    private var armLengthChangedRecalculateClockHands: Boolean = false
-
-    // Default size of watch face drawing area, that is, a no size rectangle. Will be replaced with
-    // valid dimensions from the system.
-    private var currentWatchFaceSize = Rect(0, 0, 0, 0)
 
     init {
         scope.launch {
@@ -153,12 +134,12 @@ class AnalogWatchCanvasRenderer(
                         )
                     )
                 }
-                DRAW_HOUR_PIPS_STYLE_SETTING -> {
+                SHOW_TIME_STYLE_SETTING -> {
                     val booleanValue = options.value as
                         UserStyleSetting.BooleanUserStyleSetting.BooleanOption
 
                     newWatchFaceData = newWatchFaceData.copy(
-                        drawHourPips = booleanValue.value
+                        showTime = booleanValue.value
                     )
                 }
             }
@@ -240,18 +221,20 @@ class AnalogWatchCanvasRenderer(
         bounds: Rect,
         zonedDateTime: ZonedDateTime
     ) {
-        val formatter = DateTimeFormatter.ofPattern("h:mm")
-        val timeContent = zonedDateTime.toLocalDateTime().format(formatter)
-        timeTextPaint.color = watchFaceColors.activeForegroundColor
-        val timePosOffset = context.resources.getDimension(R.dimen.time_pos)
-        val timeBounds = Rect() // timeBounds is like an out parameter
-        timeTextPaint.getTextBounds(timeContent, 0, timeContent.length, timeBounds)
-        canvas.drawText(
-            timeContent,
-            (bounds.centerX() - timeBounds.width() / 2).toFloat(),
-            bounds.top + timePosOffset + timeBounds.height() / 2,
-            timeTextPaint
-        )
+        if(watchFaceData.showTime) {
+            val formatter = DateTimeFormatter.ofPattern("h:mm")
+            val timeContent = zonedDateTime.toLocalDateTime().format(formatter)
+            timeTextPaint.color = watchFaceColors.activeForegroundColor
+            val timePosOffset = context.resources.getDimension(R.dimen.time_pos)
+            val timeBounds = Rect() // timeBounds is like an out parameter
+            timeTextPaint.getTextBounds(timeContent, 0, timeContent.length, timeBounds)
+            canvas.drawText(
+                timeContent,
+                (bounds.centerX() - timeBounds.width() / 2).toFloat(),
+                bounds.top + timePosOffset + timeBounds.height() / 2,
+                timeTextPaint
+            )
+        }
 
         val contentArea = Rect(
             (context.resources.getFraction(R.fraction.content_area_padding_x, bounds.width(), 0) + bounds.left).toInt(),
@@ -295,11 +278,5 @@ class AnalogWatchCanvasRenderer(
 
     companion object {
         private const val TAG = "AnalogWatchCanvasRenderer"
-
-        // Painted between pips on watch face for hour marks.
-        private val HOUR_MARKS = arrayOf("3", "6", "9", "12")
-
-        // Used to canvas.scale() to scale watch hands in proper bounds. This will always be 1.0.
-        private const val WATCH_HAND_SCALE = 1.0f
     }
 }
