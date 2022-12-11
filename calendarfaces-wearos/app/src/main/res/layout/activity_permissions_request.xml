@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:padding="0dp"
+    tools:context=".activities.PermissionsRequestActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/inner_frame_layout_padding"
+        app:layout_boxedEdges="all">
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/permissions_request_header"
+            android:textAlignment="center"
+            android:textSize="@dimen/header_size"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/grant_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grant_button_text"
+            android:backgroundTint="@color/dark_green"
+            android:layout_gravity="center_horizontal|bottom"
+        />
+    </FrameLayout>
+</androidx.wear.widget.BoxInsetLayout>

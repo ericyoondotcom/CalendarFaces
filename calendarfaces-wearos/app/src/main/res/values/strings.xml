@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name" translatable="false">CalendarFaces</string>
+    <string name="app_name" translatable="false">Eventful - Calendar Faces</string>
 
     <string name="analog_watch_face_name" translatable="false">Eventful</string>
 
@@ -38,4 +38,8 @@
 
     <!-- Watch face text constants -->
     <string name="header_text_content">NEXT UP</string>
+
+    <!-- PermissionsRequestActivity -->
+    <string name="permissions_request_header">CalendarFaces needs permission to access calendar data. Accept the prompt or go to app settings</string>
+    <string name="grant_button_text">Grant</string>
 </resources>

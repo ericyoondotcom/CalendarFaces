@@ -84,4 +84,6 @@ dependencies {
     implementation libs.wear.watchface.data
     implementation libs.wear.watchface.editor
     implementation libs.wear.watchface.style
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 }

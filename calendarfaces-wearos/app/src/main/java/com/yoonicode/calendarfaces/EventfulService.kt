@@ -15,17 +15,19 @@
  */
 package com.yoonicode.calendarfaces
 
-import android.util.Log
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Binder
+import android.os.IBinder
 import android.view.SurfaceHolder
-import androidx.wear.watchface.CanvasType
-import androidx.wear.watchface.ComplicationSlotsManager
-import androidx.wear.watchface.WatchFace
-import androidx.wear.watchface.WatchFaceService
-import androidx.wear.watchface.WatchFaceType
-import androidx.wear.watchface.WatchState
+import androidx.core.content.ContextCompat
+import androidx.wear.watchface.*
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSchema
+import com.yoonicode.calendarfaces.activities.PermissionsRequestActivity
 import com.yoonicode.calendarfaces.utils.CalendarEntry
+import com.yoonicode.calendarfaces.utils.CalendarUtils
 import com.yoonicode.calendarfaces.utils.createComplicationSlotManager
 import com.yoonicode.calendarfaces.utils.createUserStyleSchema
 import java.util.*
@@ -37,6 +39,7 @@ import java.util.*
  */
 class EventfulService : WatchFaceService() {
     var calendarEntry: CalendarEntry? = null
+    var hasPermission = false
 
     // Used by Watch Face APIs to construct user setting options and repository.
     override fun createUserStyleSchema(): UserStyleSchema =
@@ -57,13 +60,6 @@ class EventfulService : WatchFaceService() {
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
-        calendarEntry = CalendarEntry(
-            Calendar.getInstance().apply {
-                timeInMillis += 1000 * 3
-            },
-            "Fortnite Time"
-        )
-
         val renderer = AnalogWatchCanvasRenderer(
             this,
             context = applicationContext,
@@ -74,11 +70,42 @@ class EventfulService : WatchFaceService() {
             canvasType = CanvasType.HARDWARE
         )
 
-        // Creates the watch face.
-        return WatchFace(
+        checkForPermission()
+        startListener()
+        updateCalendarEntry()
+
+        val face = WatchFace(
             watchFaceType = WatchFaceType.ANALOG,
             renderer = renderer
         )
+        face.setTapListener(renderer)
+        return face
+    }
+
+    private fun checkForPermission() {
+        hasPermission = (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED)
+    }
+
+    fun launchPermissionGrantActivity() {
+        val intent = Intent(this, PermissionsRequestActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    private fun startListener() {
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                updateCalendarEntry()
+            }
+        }, 0, 1000 * 5)
+    }
+
+    private fun updateCalendarEntry() {
+        if(hasPermission) {
+            calendarEntry = CalendarUtils.getFirstEvent(applicationContext)
+        } else {
+            checkForPermission()
+        }
     }
 
     companion object {

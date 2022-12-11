@@ -1,17 +1,14 @@
 package com.yoonicode.calendarfaces
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.Rect
+import android.graphics.*
+import android.text.TextPaint
+import android.text.TextUtils
 import android.text.format.DateUtils
 import android.util.Log
 import android.view.SurfaceHolder
-import androidx.wear.watchface.ComplicationSlotsManager
-import androidx.wear.watchface.DrawMode
-import androidx.wear.watchface.Renderer
-import androidx.wear.watchface.WatchState
+import androidx.core.content.res.ResourcesCompat
+import androidx.wear.watchface.*
 import androidx.wear.watchface.complications.rendering.CanvasComplicationDrawable
 import androidx.wear.watchface.complications.rendering.ComplicationDrawable
 import androidx.wear.watchface.style.CurrentUserStyleRepository
@@ -54,7 +51,7 @@ class AnalogWatchCanvasRenderer(
     canvasType,
     FRAME_PERIOD_MS_DEFAULT,
     clearWithBackgroundTintBeforeRenderingHighlightLayer = false
-) {
+), WatchFace.TapListener {
     class AnalogSharedAssets : SharedAssets {
         override fun onDestroy() {
         }
@@ -71,21 +68,27 @@ class AnalogWatchCanvasRenderer(
         watchFaceData.ambientColorStyle
     )
 
+    private val displayFont = ResourcesCompat.getFont(context, R.font.lexend_regular)
+
     private val timeTextPaint = Paint().apply {
         isAntiAlias = true
         textSize = context.resources.getDimensionPixelSize(R.dimen.time_text_size).toFloat()
+        typeface = displayFont
     }
     private val headerTextPaint = Paint().apply {
         isAntiAlias = true
         textSize = context.resources.getDimensionPixelSize(R.dimen.header_text_size).toFloat()
+        typeface = displayFont
     }
     private val eventNameTextPaint = Paint().apply {
         isAntiAlias = true
         textSize = context.resources.getDimensionPixelSize(R.dimen.event_name_size).toFloat()
+        typeface = displayFont
     }
     private val eventTimeTextPaint = Paint().apply {
         isAntiAlias = true
         textSize = context.resources.getDimensionPixelSize(R.dimen.event_time_size).toFloat()
+        typeface = displayFont
     }
 
     init {
@@ -223,11 +226,6 @@ class AnalogWatchCanvasRenderer(
                 timeTextPaint
             )
         }
-
-        if(service.calendarEntry == null) {
-            return
-        }
-
         val contentArea = Rect(
             (context.resources.getFraction(R.fraction.content_area_padding_x, bounds.width(), 0) + bounds.left).toInt(),
             (context.resources.getFraction(R.fraction.content_area_padding_y, bounds.height(), 0) + bounds.top).toInt(),
@@ -239,8 +237,27 @@ class AnalogWatchCanvasRenderer(
         val xOrigin = contentArea.left.toFloat()
         val yOrigin = contentArea.centerY().toFloat()
 
+        if(service.calendarEntry == null) {
+            headerTextPaint.color = watchFaceColors.activeHighlightColor
+            val text = if(service.hasPermission) "NO EVENTS" else "TAP TO SET UP"
+            val textBounds = Rect();
+            headerTextPaint.getTextBounds(text, 0, text.length, textBounds)
+            canvas.drawText(
+                text,
+                (contentArea.centerX() - textBounds.width() / 2).toFloat(),
+                yOrigin,
+                headerTextPaint
+            )
+            return
+        }
+
         eventNameTextPaint.color = watchFaceColors.activeForegroundColor
-        val eventName = service.calendarEntry!!.title
+        val eventName = TextUtils.ellipsize(
+            service.calendarEntry!!.title,
+            TextPaint(eventNameTextPaint),
+            contentArea.width().toFloat(),
+            TextUtils.TruncateAt.END
+        ).toString()
         val eventNameBounds = Rect();
         eventNameTextPaint.getTextBounds(eventName, 0, eventName.length, eventNameBounds)
         canvas.drawText(eventName, xOrigin, yOrigin, eventNameTextPaint)
@@ -270,6 +287,12 @@ class AnalogWatchCanvasRenderer(
             yOrigin + (eventNameBounds.height() / 2) + paddingBetweenText + (eventTimeBounds.height() / 2),
             eventTimeTextPaint
         )
+    }
+
+    override fun onTapEvent(tapType: Int, tapEvent: TapEvent, complicationSlot: ComplicationSlot?) {
+        if(tapType == TapType.UP) {
+            if(!service.hasPermission) service.launchPermissionGrantActivity()
+        }
     }
 
     companion object {
