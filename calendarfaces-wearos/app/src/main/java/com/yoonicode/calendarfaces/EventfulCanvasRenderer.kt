@@ -19,6 +19,7 @@ import com.yoonicode.calendarfaces.data.watchface.ColorStyleIdAndResourceIds
 import com.yoonicode.calendarfaces.data.watchface.WatchFaceColorPalette.Companion.convertToWatchFaceColorPalette
 import com.yoonicode.calendarfaces.data.watchface.WatchFaceData
 import com.yoonicode.calendarfaces.utils.COLOR_STYLE_SETTING
+import com.yoonicode.calendarfaces.utils.CalendarEntry
 import com.yoonicode.calendarfaces.utils.SHOW_TIME_STYLE_SETTING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -237,7 +238,9 @@ class AnalogWatchCanvasRenderer(
         val xOrigin = contentArea.left.toFloat()
         val yOrigin = contentArea.centerY().toFloat()
 
-        if(service.calendarEntry == null) {
+        val firstEvent = service.getFirstEvent()
+
+        if(firstEvent == null) {
             headerTextPaint.color = watchFaceColors.activeHighlightColor
             val text = if(service.hasPermission) "NO EVENTS" else "TAP TO SET UP"
             val textBounds = Rect();
@@ -253,7 +256,7 @@ class AnalogWatchCanvasRenderer(
 
         eventNameTextPaint.color = watchFaceColors.activeForegroundColor
         val eventName = TextUtils.ellipsize(
-            service.calendarEntry!!.title,
+            firstEvent!!.title,
             TextPaint(eventNameTextPaint),
             contentArea.width().toFloat(),
             TextUtils.TruncateAt.END
@@ -275,7 +278,7 @@ class AnalogWatchCanvasRenderer(
 
         eventTimeTextPaint.color = watchFaceColors.activeForegroundColor
         val eventTime = DateUtils.getRelativeTimeSpanString(
-            service.calendarEntry!!.startTime.timeInMillis,
+            firstEvent!!.startTime.timeInMillis,
             Calendar.getInstance().timeInMillis,
             DateUtils.SECOND_IN_MILLIS
         ).toString()

@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.yoonicode.calendarfaces.EventfulService
 import com.yoonicode.calendarfaces.R
 import com.yoonicode.calendarfaces.databinding.ActivityPermissionsRequestBinding
 
@@ -38,6 +39,7 @@ class PermissionsRequestActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(applicationContext, "Permissions obtained!", Toast.LENGTH_SHORT).show()
+            EventfulService.instance?.updateCalendarEntries()
             finish()
         } else {
             Toast.makeText(applicationContext, "App will not function without calendar permission", Toast.LENGTH_LONG).show()

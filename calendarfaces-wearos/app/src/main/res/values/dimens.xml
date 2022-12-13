@@ -2,7 +2,7 @@
 
 <resources>
     <!-- constants for watch face element renderer. -->
-    <fraction name="content_area_padding_x">20%</fraction>
+    <fraction name="content_area_padding_x">15%</fraction>
     <fraction name="content_area_padding_y">33%</fraction>
     <dimen name="time_text_size">15sp</dimen>
     <dimen name="time_pos">20sp</dimen>

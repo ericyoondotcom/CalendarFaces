@@ -25,8 +25,8 @@
     <color name="green_background_color">#274a23</color>
 
     <!-- Blue Style -->
-    <color name="blue_highlight_color">#00d5ff</color>
-    <color name="blue_foreground_color">#1f66ff</color>
+    <color name="blue_highlight_color">#1f66ff</color>
+    <color name="blue_foreground_color">#00d5ff</color>
     <color name="blue_background_color">@color/black</color>
 
     <!-- White Style -->

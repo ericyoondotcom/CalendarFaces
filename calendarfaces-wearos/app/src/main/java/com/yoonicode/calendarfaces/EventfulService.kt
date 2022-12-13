@@ -18,8 +18,6 @@ package com.yoonicode.calendarfaces
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Binder
-import android.os.IBinder
 import android.view.SurfaceHolder
 import androidx.core.content.ContextCompat
 import androidx.wear.watchface.*
@@ -31,6 +29,7 @@ import com.yoonicode.calendarfaces.utils.CalendarUtils
 import com.yoonicode.calendarfaces.utils.createComplicationSlotManager
 import com.yoonicode.calendarfaces.utils.createUserStyleSchema
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Handles much of the boilerplate needed to implement a watch face (minus rendering code; see
@@ -38,7 +37,12 @@ import java.util.*
  * the watch face).
  */
 class EventfulService : WatchFaceService() {
-    var calendarEntry: CalendarEntry? = null
+    companion object {
+        var instance: EventfulService? = null
+        const val TAG = "EventfulService"
+    }
+
+    var calendarEntries: ArrayList<CalendarEntry> = ArrayList<CalendarEntry>()
     var hasPermission = false
 
     // Used by Watch Face APIs to construct user setting options and repository.
@@ -70,9 +74,11 @@ class EventfulService : WatchFaceService() {
             canvasType = CanvasType.HARDWARE
         )
 
+        instance = this
+
         checkForPermission()
         startListener()
-        updateCalendarEntry()
+        updateCalendarEntries()
 
         val face = WatchFace(
             watchFaceType = WatchFaceType.ANALOG,
@@ -95,20 +101,27 @@ class EventfulService : WatchFaceService() {
     private fun startListener() {
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                updateCalendarEntry()
+                updateCalendarEntries()
             }
-        }, 0, 1000 * 5)
+        }, 0, 1000 * 60)
     }
 
-    private fun updateCalendarEntry() {
+    fun updateCalendarEntries() {
         if(hasPermission) {
-            calendarEntry = CalendarUtils.getFirstEvent(applicationContext)
+            calendarEntries = CalendarUtils.getSortedEvents(applicationContext)
         } else {
             checkForPermission()
+            if(hasPermission) updateCalendarEntries()
         }
     }
 
-    companion object {
-        const val TAG = "EventfulService"
+    fun getFirstEvent(): CalendarEntry? {
+        while(
+            !calendarEntries.isEmpty() &&
+            calendarEntries[0].startTime < Calendar.getInstance()
+        ) {
+            calendarEntries.removeFirst()
+        }
+        return if(calendarEntries.isEmpty()) null else calendarEntries[0]
     }
 }

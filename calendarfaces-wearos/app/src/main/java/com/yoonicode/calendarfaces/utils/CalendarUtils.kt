@@ -16,9 +16,9 @@ data class CalendarEntry (
 
 class CalendarUtils {
     companion object { // this is the Kotlin way of making a method static
-        fun getFirstEvent(
+        fun getSortedEvents(
             context: Context
-        ): CalendarEntry? {
+        ): ArrayList<CalendarEntry> {
             val INSTANCE_PROJECTION: Array<String> = arrayOf(
                 CalendarContract.Instances.ALL_DAY, // 0
                 CalendarContract.Instances.BEGIN, // 1
@@ -39,7 +39,7 @@ class CalendarUtils {
             context.contentResolver.query(
                 builder.build(), INSTANCE_PROJECTION, null, null, null
             ).use {
-                if(it == null) return null;
+                if(it == null) return ArrayList<CalendarEntry>();
                 while(it.moveToNext()) {
                     val allDay = it.getInt(PROJECTION_ALL_DAY)
                     val beginVal = it.getLong(PROJECTION_BEGIN_INDEX)
@@ -52,8 +52,7 @@ class CalendarUtils {
             }
 
             entries.sortBy { i -> i.startTime }
-            if(entries.isEmpty()) return null
-            return entries[0]
+            return entries
         }
     }
 }
