@@ -1,0 +1,4 @@
+Thank you for using Eventful - Calendar Faces.
+
+The app does not transmit any data to our servers; all data, including your calendar events, are stored on your device. As such, we do not collect
+any personal information.
