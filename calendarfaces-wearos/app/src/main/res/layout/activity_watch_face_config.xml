@@ -27,7 +27,7 @@
     android:paddingBottom="@dimen/activity_config_padding"
     tools:context=".editor.WatchFaceConfigActivity"
     tools:deviceIds="wear">
-
+    <requestFocus />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/form_layout"
         android:layout_width="match_parent"
